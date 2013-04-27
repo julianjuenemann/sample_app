@@ -86,8 +86,23 @@ describe User do
       before { @user.password_confirmation = nil }
       it { should_not be_valid }
     end
+    
     describe "remember token" do
         before { @user.save }
         its(:remember_token) { should_not be_blank }
     end
+    it { should respond_to(:authenticate) }
+  it { should respond_to(:admin) }
+
+  it { should be_valid }
+  it { should_not be_admin }
+
+  describe "with admin attribute set to 'true'" do
+    before do
+      @user.save!
+      @user.toggle!(:admin)
+    end
+
+    it { should be_admin }
+  end
 end
